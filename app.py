@@ -47,7 +47,7 @@ if option == "Home":
     
     # Read the contents of the HTML file
     try:
-        with open('templates/index.html', 'r') as file:
+        with open('index.html', 'r') as file:
             html_content = file.read()
 
         # Wrap HTML content in a div with height set to 100%
