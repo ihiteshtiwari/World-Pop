@@ -54,7 +54,7 @@ if option == "Home":
         html_with_height = f'<div style="height:100%;">{html_content}</div>'
 
         # Display the content of the HTML file with adjusted height
-        st.components.v1.html(html_with_height, width=1450, height=1510)
+        st.components.v1.html(html_with_height, width=1450, height=2000)
         st.write("", data)
         st.write("ref:https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data")
     except FileNotFoundError:
