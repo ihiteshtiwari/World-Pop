@@ -56,7 +56,7 @@ if option == "Home":
         # Display the content of the HTML file with adjusted height
         st.components.v1.html(html_with_height, width=1450, height=1500)
         st.write("Your data goes here", data)
-        st.write(ref:https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data)
+        st.write("ref:https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data")
     except FileNotFoundError:
         st.write("HTML file not found. Check the file path.")
     except Exception as e:
