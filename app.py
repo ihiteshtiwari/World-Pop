@@ -37,7 +37,7 @@ con_pop = population.groupby(['ORIGEN', 'Year']).Population.sum().reset_index()
 
 # Your Streamlit app structure
 
-option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Bar Chart", "Pie Chart", "Top 10 by Area", "Top 10 Growth Rate", "Project Growth Rate", "Top 10 Population & Growth Rate"))
+option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Bar Chart", "Pie Chart", "Top 10 by Area", "Top 10 Growth Rate", "Population Growth Rate", "Top 10 Population & Growth Rate"))
 
 
 
@@ -135,7 +135,7 @@ elif option == "Predict Population":
     # Display the predicted population percentage for the input year
  
 
-elif option == "Project Growth Rate":
+elif option == "Population Growth Rate":
     # Calculate the population growth rate for each year
     data['Population_Growth_Rate'] = (data['2022'] - data['1970']) / data['1970']
 
