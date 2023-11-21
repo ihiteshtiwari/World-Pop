@@ -2,9 +2,26 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+
+def load_custom_css():
+    with open("styles.css", "r") as f:
+        css = f.read()
+        st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
+def main():
+    st.set_page_config(layout="wide")
+    load_custom_css()
+
+    # Your Streamlit app content with different options
+    # ...
+
+if __name__ == "__main__":
+    main()
+
+
  
 # Load the data and perform necessary transformations
-data = pd.read_csv("world_population.csv")
+data = pd.read_csv(r'world_population.csv')
 
 # Renaming Columns and other data processing...
 
@@ -19,19 +36,32 @@ population.columns = ['ORIGEN', 'CCA3', 'Year', 'Population']
 con_pop = population.groupby(['ORIGEN', 'Year']).Population.sum().reset_index()
 
 # Your Streamlit app structure
-st.title("World Population Analysis")
+
 option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Bar Chart", "Pie Chart", "Top 10 by Area", "Top 10 Growth Rate", "Project Growth Rate", "Top 10 Population & Growth Rate"))
 
+
+
 if option == "Home":
-    st.title("  ")
-    st.write("" ,data,"ref: https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data")
+    
+    
     
     # Read the contents of the HTML file
-    with open("index.html") as file:
-        html_content = file.read()
+    try:
+        with open('templates/index.html', 'r') as file:
+            html_content = file.read()
 
-    # Display the content of the HTML file
-    st.markdown(html_content, unsafe_allow_html=True)
+        # Wrap HTML content in a div with height set to 100%
+        html_with_height = f'<div style="height:100%;">{html_content}</div>'
+
+        # Display the content of the HTML file with adjusted height
+        st.components.v1.html(html_with_height, width=2000, height=1500)
+        st.write("Your data goes here", data)
+    except FileNotFoundError:
+        st.write("HTML file not found. Check the file path.")
+    except Exception as e:
+        st.write("An error occurred:", e)
+        
+
 elif option == "Choropleth Map":
     # Code for Choropleth Map
     pop_gr = population.sort_values(by='Year', ascending=True)
