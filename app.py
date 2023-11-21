@@ -4,7 +4,7 @@ import plotly.express as px
 
  
 # Load the data and perform necessary transformations
-data = pd.read_csv(r'world_population.csv')
+data = pd.read_csv("world_population.csv")
 
 # Renaming Columns and other data processing...
 
@@ -27,7 +27,7 @@ if option == "Home":
     st.write("" ,data)
     
     # Read the contents of the HTML file
-    with open(r'templates\index.html', 'r') as file:
+    with open("index.html") as file:
         html_content = file.read()
 
     # Display the content of the HTML file
