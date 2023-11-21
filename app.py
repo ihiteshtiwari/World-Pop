@@ -24,7 +24,7 @@ option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Ba
 
 if option == "Home":
     st.title("  ")
-    st.write("" ,data,"/n ref: https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data")
+    st.write("" ,data,"ref: https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset/data")
     
     # Read the contents of the HTML file
     with open("index.html") as file:
