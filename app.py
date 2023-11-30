@@ -37,7 +37,7 @@ con_pop = population.groupby(['ORIGEN', 'Year']).Population.sum().reset_index()
 
 # Your Streamlit app structure
 
-option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Bar Chart", "Pie Chart", "Top 10 by Area", "Top 10 Growth Rate", "Population Growth Rate", "Top 10 Population & Growth Rate"))
+option = st.sidebar.selectbox("Select an option", ("Home", "Choropleth Map", "Bar Chart", "Pie Chart", "Top 10 by Area", "Top 10 Growth Rate", "Population Predication", "Top 10 Population & Growth Rate"))
 
 
 
@@ -135,7 +135,7 @@ elif option == "Predict Population":
     # Display the predicted population percentage for the input year
  
 
-elif option == "Population Growth Rate":
+elif option == "Population Predication":
     # Calculate the population growth rate for each year
     data['Population_Growth_Rate'] = (data['2022'] - data['1970']) / data['1970']
 
@@ -143,13 +143,45 @@ elif option == "Population Growth Rate":
     average_population_growth_rate = data['Population_Growth_Rate'].mean()
 
     # Get the future year input from the user
-    future = st.number_input("Enter a year:", min_value=2023, step=1)
-    future_data = future - 2022
-    GR_percent = (future_data * average_population_growth_rate)   # Assuming 'Population_Growth_Rate' represents the yearly growth rate
+    future = st.number_input("Enter a year:", min_value=1970, max_value=2100, step=1)
 
-    # Display the projected population growth rate for the entered future year
-    st.write(f"In {future} world  Population percent will be : {GR_percent}")
+    try:
+        if future < 2023:
+            # Sum the values in the column corresponding to the entered year
+            col_sum = data[str(future)].sum() / 1e9  # Convert to billions
+            st.write(f"World-wide Population in {future}:", col_sum, "billion")
 
+            # Prepare data for line chart (assuming year columns are from '1970' to '2022')
+            years = ['1970', '1980', '1990', '2000', '2010', '2015', '2020', '2022', str(future)]
+            population_data = data[years].loc[0] / 1e9  # Selecting the population data from the first row and converting to billions
+
+            # Create a line chart
+            st.line_chart(population_data)
+        else:
+            future_data = future - 2022
+
+            # Calculate the sum of values in the '2022' column
+            sum_2022 = data['2022'].sum()
+
+            # Calculate the projected future population
+            future_pop = sum_2022 * (1 + (average_population_growth_rate / 100)) ** future_data / 1e9  # Convert to billions
+            
+            # Display the projected future population
+            st.write(f"World-wide Population in {future} will be:", round(future_pop, 2), "billion")
+
+            # Prepare data for line chart (assuming year columns are from '1970' to '2022')
+            years = ['1970', '1980', '1990', '2000', '2010', '2015', '2020', '2022', str(round(future_pop))]
+            population_data = data[years].loc[0] / 1e9  # Selecting the population data from the first row and converting to billions
+
+            # Create a line chart including future projection
+            st.line_chart(population_data)
+
+            # Create data for the future year and add to the line chart
+            future_years = ['2022', str(round(future_pop))]
+            future_population_data = data[future_years].iloc[0] / 1e9  # Selecting the population data for future years and converting to billions
+            st.line_chart(future_population_data)
+    except KeyError:
+        st.markdown("<p style='color:red;'>Data not found for the entered year. Please enter one of these years: 1970, 1980, 1990, 2000, 2010, 2015, 2020, 2022 OR FUTURE YEAR. </p>", unsafe_allow_html=True)
 
 
 elif option == "Top 10 Population & Growth Rate":
